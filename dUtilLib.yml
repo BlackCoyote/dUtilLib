@@ -1,0 +1,20 @@
+random_surface_block:
+  type: procedure
+  debug: false
+  definitions: location|radius
+  script:
+  - if <def[location]||null> !matches location {
+    - debug error "DUL - No valid location specified!"
+    - determine null
+    }
+  - if <def[radius]||null> !matches number {
+    - debug error "DUL - No valid radius specified!"
+    - determine null
+    }
+  - while true:
+    - define newloc <def[location].add[<util.random.int[<def[radius].mul[-1]>].to[<def[radius]>]>,0,<util.random.int[<def[radius].mul[-1]>].to[<def[radius]>]>].highest.find.surface_blocks.within[5].get[1]||null>
+    - if <def[newloc]> != null && <def[newloc].material.is_occluding> {
+      - determine <def[newloc].above>
+      } else if <def[loop_index]> >= 10 {
+      - determine null
+      }
