@@ -14,20 +14,17 @@ DUL_WRCG:
     - give <proc[DUL_WRCG].context[10/i@apple|1/i@gold_ingot|20/i@stone]>
   script:
     - define l 'li@'
-    - foreach <queue.definitions.exclude[l]> {
+    - foreach '<queue.definitions.exclude[l]>':
       - define l '<def[l].include[<def[%value%]>]>'
-      }
     - define w '0'
-    - foreach <def[l].parse[split[/].get[1]]> {
+    - foreach '<def[l].parse[before[/]]>':
       - define w '<def[w].add[%value%]>'
-      }
     - define number '<util.random.int[1].to[%w%]>'
     - define hv '0'
-    - foreach %l% {
+    - foreach '%l%':
       - define ov '%hv%'
       - define lv '<def[ov].add[1]>'
-      - define hv '<def[ov].add[<def[value].split[/].get[1]>]>'
+      - define hv '<def[ov].add[<def[value].before[/]>]>'
       - if %number% >= %lv% && %number% <= %hv% {
-        - determine '<def[value].split[/].get[2]>'
+        - determine '<def[value].after[/]>'
         }
-      }
