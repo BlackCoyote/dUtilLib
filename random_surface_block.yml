@@ -1,5 +1,7 @@
 DUL_random_surface_block:
   type: procedure
+  definitions: location|radius
+  debug: false
   DUL:
     author: 
     - BlackCoyote
@@ -9,8 +11,6 @@ DUL_random_surface_block:
     - <proc[DUL_random_surface_block].context[<l@location>|<radius>]>
     example:
     - <proc[DUL_random_surface_block].context[<player.location>|5000]>
-  debug: false
-  definitions: location|radius
   script:
   - if <def[location]||null> !matches location {
     - debug error "DUL - No valid location specified!"

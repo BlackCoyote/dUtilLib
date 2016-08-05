@@ -1,5 +1,6 @@
 DUL_unique_queue_id_prefixed:
   type: procedure
+  debug: false
   DUL:
     author: 
     - BlackCoyote
@@ -9,7 +10,6 @@ DUL_unique_queue_id_prefixed:
     - <proc[DUL_unique_queue_id_prefixed].context[<prefix>]>
     example:
     - <proc[DUL_unique_queue_id_prefixed].context[DUL_<player>]>
-  debug: false
   script:
   - define prefix <def[1]||>
   - define id <def[prefix]><util.random.duuid>

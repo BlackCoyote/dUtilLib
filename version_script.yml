@@ -1,0 +1,6 @@
+DUL_version_script:
+  type: version
+  name: dUtilLib
+  id: 96
+  description: A collection of dscript functions and utilities written by BlackCoyote and Anthony.
+  version: 3

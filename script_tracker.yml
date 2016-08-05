@@ -1,0 +1,6 @@
+DUL_script_tracker:
+  type: world
+  debug: false
+  events:
+    on system time hourly:
+    - webget "http://morphanone.space/webizen.aspx/tracker?script=96&version=<s@DUL_version_script.yaml_key[version]>"

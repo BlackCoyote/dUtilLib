@@ -1,5 +1,6 @@
 DUL_text_progress_bar:
   type: procedure
+  debug: false
   DUL:
     author: 
     - BlackCoyote
@@ -9,7 +10,6 @@ DUL_text_progress_bar:
     - <proc[DUL_text_progress_bar].context[<percentage>(|<size>|<character>|<color1>|<color2>)]>
     example:
     - <proc[DUL_text_progress_bar].context[<player.health.percentage>]>
-  debug: false
   script:
   - define percentage <def[1]||0>
   - if <def[percentage].as_int||none> == none {
