@@ -1,0 +1,33 @@
+DUL_WRCG:
+  type: procedure
+  debug: false
+  DUL:
+    author:
+    - Anthony
+    name:
+    - Weighted Random Choice Generator
+    description:
+    - Supply a list of weight/return values and have one of the values returned to you randomly based on weight.
+    usage:
+    - <proc[DUL_WRCG].context[weight/return|...]>
+    example:
+    - give <proc[DUL_WRCG].context[10/i@apple|1/i@gold_ingot|20/i@stone]>
+  script:
+    - define l 'li@'
+    - foreach <queue.definitions.exclude[l]> {
+      - define l '<def[l].include[<def[%value%]>]>'
+      }
+    - define w '0'
+    - foreach <def[l].parse[split[/].get[1]]> {
+      - define w '<def[w].add[%value%]>'
+      }
+    - define number '<util.random.int[1].to[%w%]>'
+    - define hv '0'
+    - foreach %l% {
+      - define ov '%hv%'
+      - define lv '<def[ov].add[1]>'
+      - define hv '<def[ov].add[<def[value].split[/].get[1]>]>'
+      - if %number% >= %lv% && %number% <= %hv% {
+        - determine '<def[value].split[/].get[2]>'
+        }
+      }
