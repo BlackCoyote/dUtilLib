@@ -1,0 +1,41 @@
+DUL_text_progress_bar:
+  type: procedure
+  DUL:
+    author: 
+    - BlackCoyote
+    description: 
+    - Makes a text based progress bar based on the percentage you provide.
+    usage:
+    - <proc[DUL_text_progress_bar].context[<percentage>(|<size>|<character>|<color1>|<color2>)]>
+    example:
+    - <proc[DUL_text_progress_bar].context[<player.health.percentage>]>
+  debug: false
+  script:
+  - define percentage <def[1]||0>
+  - if <def[percentage].as_int||none> == none {
+    - define percentage 0
+    }
+  - if <def[2].exists> {
+    - define max <def[2]>
+    }
+  - if <def[max].as_int||none> == none {
+    - define max 10
+    }
+  - if <def[3].exists> {
+    - define char <def[3].substring[1,1]||=>
+    } else {
+    - define char =
+    }
+  - if <def[4].exists> {
+    - define col1 <def[4]>
+    } else {
+    - define col1 &a
+    }
+  - if <def[5].exists> {
+    - define col2 <def[5]>
+    } else {
+    - define col2 &7
+    }
+  - define string <el@.pad_right[<def[max]>].with[<def[char]>]>
+  - define split <def[max].div[100].mul[<def[percentage]>].as_int>
+  - determine "<def[col1].parse_colors><def[string].substring[1,<def[split]>]><def[col2].parse_colors><def[string].substring[<def[split].add[1].as_int>,<def[max]>]>"

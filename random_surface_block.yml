@@ -6,7 +6,7 @@ DUL_random_surface_block:
     description: 
     - Finds a random surface block within the provided radius more efficiently than conventional denizen tags.
     usage:
-    - <proc[DUL_random_surface_block].context[<l@location>|<#>]>
+    - <proc[DUL_random_surface_block].context[<l@location>|<radius>]>
     example:
     - <proc[DUL_random_surface_block].context[<player.location>|5000]>
   debug: false
