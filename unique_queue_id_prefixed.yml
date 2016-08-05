@@ -1,0 +1,18 @@
+DUL_unique_queue_id_prefixed:
+  type: procedure
+  DUL:
+    author: 
+    - BlackCoyote
+    description: 
+    - Gives a unique queue ID for you to use, with a specified prefix.
+    usage:
+    - <proc[DUL_unique_queue_id_prefixed].context[<prefix>]>
+    example:
+    - <proc[DUL_unique_queue_id_prefixed].context[DUL_<player>]>
+  debug: false
+  script:
+  - define prefix <def[1]||>
+  - define id <def[prefix]><util.random.duuid>
+  - while <queue.list.parse[id].contains[<def[id]>]>:
+    - define id <def[prefix]><util.random.duuid>
+  - determine <def[id]>

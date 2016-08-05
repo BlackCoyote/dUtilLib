@@ -1,5 +1,14 @@
-random_surface_block:
+DUL_random_surface_block:
   type: procedure
+  DUL:
+    author: 
+    - BlackCoyote
+    description: 
+    - Finds a random surface block within the provided radius more efficiently than conventional denizen tags.
+    usage:
+    - <proc[DUL_random_surface_block].context[<l@location>|<#>]>
+    example:
+    - <proc[DUL_random_surface_block].context[<player.location>|5000]>
   debug: false
   definitions: location|radius
   script:
