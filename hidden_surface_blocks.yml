@@ -1,0 +1,25 @@
+DUL_hidden_spawn_locations:
+  type: procedure
+  debug: false
+  definitions: location|radius
+  DUL:
+    author: 
+    - BlackCoyote
+    description: 
+    - Finds spawn locations within range that are out of line of sight.
+    - If no locations out of line of sight are found, it will return valid spawn locations within line of sight.
+    usage:
+    - <proc[DUL_hidden_spawn_locations].context[<l@location>|<radius>]>
+    example:
+    - <proc[DUL_hidden_spawn_locations].context[<player.location>|15]>
+  script:
+  - if <def[location]||null> !matches location {
+    - debug error "DUL - No valid location specified!"
+    - determine null
+    }
+  - if <def[radius]||null> !matches number {
+    - debug error "DUL - No valid radius specified!"
+    - determine null
+    }
+  - define radius <def[radius].as_int>
+  - determine <def[location].find.surface_blocks.within[<def[radius]>].filter[y.sub[<def[location].y>].abs.is[less].than[3]].filter[above.above.above.material.name.is[==].to[air]].filter[above.above.above.above.material.name.is[==].to[air]].filter[above.above.above.above.above.material.name.is[==].to[air]].filter[material.is_occluding].parse[above].filter[above.center.line_of_sight[<def[location].add[0,1.5,0].center>].not]||<def[location].find.surface_blocks.within[<def[radius]>]||li@<def[location]>>>
