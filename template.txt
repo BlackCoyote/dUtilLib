@@ -1,0 +1,14 @@
+DUL_MyScriptHere:
+  type: procedure
+  DUL:
+    author:
+    - author
+    description:
+    - description here
+    usage:
+    - usage here
+    example:
+    - example here
+  debug: false
+  script:
+  - script here
