@@ -3,9 +3,9 @@ DUL_random_surface_block:
   definitions: location|radius
   debug: false
   DUL:
-    author: 
+    author:
     - BlackCoyote
-    description: 
+    description:
     - Finds a random surface block within the provided radius more efficiently than conventional denizen tags.
     usage:
     - <proc[DUL_random_surface_block].context[<l@location>|<radius>]>

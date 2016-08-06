@@ -2,9 +2,9 @@ DUL_text_progress_bar:
   type: procedure
   debug: false
   DUL:
-    author: 
+    author:
     - BlackCoyote
-    description: 
+    description:
     - Makes a text based progress bar based on the percentage you provide.
     usage:
     - <proc[DUL_text_progress_bar].context[<percentage>(|<size>|<character>|<color1>|<color2>)]>
