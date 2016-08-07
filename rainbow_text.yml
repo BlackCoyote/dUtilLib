@@ -1,0 +1,22 @@
+DUL_rainbow_text:
+  type: procedure
+  debug: false
+  DUL:
+    author:
+    - BlackCoyote
+    description:
+    - Gives a unique queue ID for you to use, with a specified prefix.
+    usage:
+    - <proc[DUL_rainbow_text].context[<text>]>
+    example:
+    - <proc[DUL_rainbow_text].context[I am pretty!]>
+  script:
+  - if <def[1].exists.not> {
+    - debug error "DUL - No valid text specified!"
+    - determine null
+    }
+  - define colormap li@&4|&6|&e|&a|&3|&9|&5
+  - define result ""
+  - foreach <def[1].to_list>:
+    - define result "<def[result]><def[colormap].get[<def[loop_index].sub[1].mod[7].add[1].as_int>]><def[value]>"
+  - determine <def[result].parse_color>
