@@ -5,7 +5,7 @@ DUL_rainbow_text:
     author:
     - BlackCoyote
     description:
-    - Gives a unique queue ID for you to use, with a specified prefix.
+    - Turns the colour of a text into a rainbow format with a new colour per letter.
     usage:
     - <proc[DUL_rainbow_text].context[<text>]>
     example:
