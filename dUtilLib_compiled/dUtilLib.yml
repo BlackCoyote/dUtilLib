@@ -2,9 +2,9 @@ DUL_colorcode_message:
   type: procedure
   debug: false
   DUL:
-    author: 
+    author:
     - BlackCoyote
-    description: 
+    description:
     - Encodes your message into a colour code string and back.
     -  only works with characters from a-z, 0-9, and _ !
     usage:
@@ -213,9 +213,9 @@ DUL_unique_queue_id_prefixed:
   type: procedure
   debug: false
   DUL:
-    author: 
+    author:
     - BlackCoyote
-    description: 
+    description:
     - Gives a unique queue ID for you to use, with a specified prefix.
     usage:
     - <proc[DUL_unique_queue_id_prefixed].context[<prefix>]>
