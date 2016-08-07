@@ -2,9 +2,9 @@ DUL_unique_queue_id_prefixed:
   type: procedure
   debug: false
   DUL:
-    author: 
+    author:
     - BlackCoyote
-    description: 
+    description:
     - Gives a unique queue ID for you to use, with a specified prefix.
     usage:
     - <proc[DUL_unique_queue_id_prefixed].context[<prefix>]>
