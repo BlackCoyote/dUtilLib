@@ -255,7 +255,7 @@ DUL_version_script:
   name: dUtilLib
   id: 96
   description: A collection of dscript functions and utilities written by BlackCoyote and Anthony.
-  version: 4
+  version: 5
 DUL_WRCG:
   type: procedure
   debug: false
