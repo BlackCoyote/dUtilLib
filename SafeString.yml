@@ -1,0 +1,37 @@
+DUL_safeString:
+  type: procedure
+  debug: false
+  DUL:
+    author:
+    - Anthony
+    name:
+    - Safe String
+    description:
+    - Boolean tag returns true if the string only contains lower case letters, numbers, and/or underscore _
+    usage:
+    - <proc[DUL_safeString].context[string]>
+    example:
+    - narrate <proc[DUL_safeString].context[check_this_string]>
+  script:
+    - determine '<def[1].matches[^[a-z0-9-_]+$]>'
+
+DUL_cleanString:
+  type: procedure
+  debug: false
+  DUL:
+    author:
+    - Anthony
+    name:
+    - Clean String
+    description:
+    - Clean a string of any character that is not a lower case letter, number, or underscore _
+    usage:
+    - <proc[DUL_cleanString].context[string]>
+    example:
+    - narrate <proc[DUL_cleanString].context[cleanA_thi&s_string]>
+  script:
+    - determine '<def[1].replace[regex:[^a-z0-9-_]]>'
+
+
+
+#
