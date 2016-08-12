@@ -109,6 +109,93 @@ DUL_colorcode_message:
   - foreach <def[list]>:
     - define result "<def[result]><script.yaml_key[<def[1]>.<def[value]>]||->"
   - determine <def[result].parse_color>
+DUL_ColorList:
+  type: procedure
+  debug: false
+  DUL:
+    author:
+    - Anthony
+    name:
+    - ColorList
+    description:
+    - Return colors from input or just list all colors
+    usage:
+    - <proc[DUL_colorlist].context[<list/match|input>]>
+    example:
+    - narrate <proc[DUL_colorlist].context[list]>
+    - narrate <proc[DUL_colorlist].context[match|blu]>
+
+  colors:
+    black: 0
+    dark_blue: 1
+    dark_green: 2
+    dark_aqua: 3
+    dark_red: 4
+    dark_purple: 5
+    gold: 6
+    gray: 7
+    dark_gray: 8
+    blue: 9
+    green: a
+    aqua: b
+    red: c
+    light_purple: d
+    yellow: e
+    white: f
+    magic: k
+    bold: l
+    strikethrough: m
+    underline: n
+    italic: o
+    reset: r
+
+  script:
+    - define colors '<script.list_keys[colors]>'
+    - choose '<def[1]>':
+      - case 'list':
+        - define list 'li@'
+        - foreach '<def[colors]>':
+          - define list '<def[list].include[<el@val[&<script.yaml_key[colors.%value%]>]> %value%]>'
+        - determine '<def[list]>'
+      - case 'match':
+        - determine '<proc[DUL_find_best_match].context[<def[colors]>|<def[2]>]>'
+DUL_find_best_match:
+  type: procedure
+  debug: false
+  DUL:
+    author:
+    - BlackCoyote
+    - Anthony
+    description:
+    - Returns the best search match out of a list.
+    usage:
+    - <proc[DUL_find_best_match].context[<list>|<value>]>
+    example:
+    - <proc[DUL_find_best_match].context[<server.flag[homes].as_list>|<context.args.get[1]>]>
+  script:
+  - define l '<queue.definitions.numerical>'
+  - define list 'li@'
+  - foreach '<def[l]>':
+    - define list '<def[list].include[<def[%loop_index%]>]>'
+  - define match '<def[list].last>'
+  - define list '<def[list].remove[<def[list].size>]>'
+  - if <def[list].is_empty||true> {
+    - debug error "DUL - No valid list specified!"
+    - determine null
+    }
+  - if <def[match]||null> == null {
+    - debug error "DUL - No valid value specified!"
+    - determine null
+    }
+  - if <def[list].contains[<def[match]>]> {
+    - determine <def[match]>
+    } else if <def[list].filter[starts_with[<def[match]>]].size||0> > 0 {
+    - determine <def[list].filter[starts_with[<def[match]>]].sort_by_number[length].first||null>
+    } else if <def[list].filter[contains[<def[match]>]].size||0> > 0 {
+    - determine <def[list].filter[contains[<def[match]>]].sort_by_number[length].first||null>
+    } else {
+    - determine null
+    }
 DUL_hidden_spawn_locations:
   type: procedure
   debug: false
@@ -292,7 +379,7 @@ DUL_version_script:
   name: dUtilLib
   id: 96
   description: A collection of dscript functions and utilities written by BlackCoyote and Anthony.
-  version: 6
+  version: 7
 DUL_WRCG:
   type: procedure
   debug: false
