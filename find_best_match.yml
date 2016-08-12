@@ -4,28 +4,33 @@ DUL_find_best_match:
   DUL:
     author:
     - BlackCoyote
+    - Anthony
     description:
     - Returns the best search match out of a list.
     usage:
-    - <proc[DUL_find_best_match].context[<list separated by '/'>|<value>]>
+    - <proc[DUL_find_best_match].context[<list>|<value>]>
     example:
-    - <proc[DUL_find_best_match].context[<server.flag[homes].as_list.separated_by[/]>|<context.args.get[1]>]>
+    - <proc[DUL_find_best_match].context[<server.flag[homes].as_list>|<context.args.get[1]>]>
   script:
-  - define list <def[1].split_by[/]>
+  - define l '<queue.definitions.numerical>'
+  - define list 'li@'
+  - foreach '<def[l]>':
+    - define list '<def[list].include[<def[%loop_index%]>]>'
+  - define match '<def[list].last>'
   - if <def[list].is_empty||true> {
     - debug error "DUL - No valid list specified!"
     - determine null
     }
-  - if <def[2]||null> == null {
+  - if <def[match]||null> == null {
     - debug error "DUL - No valid value specified!"
     - determine null
     }
-  - if <def[list].contains[<def[2]>]> {
-    - determine <def[2]>
-    } else if <def[list].filter[starts_with[<def[2]>]].size||0> > 0 {
-    - determine <def[list].filter[starts_with[<def[2]>]].sort_by_number[length].first||null>
-    } else if <def[list].filter[contains[<def[2]>]].size||0> > 0 {
-    - determine <def[list].filter[contains[<def[2]>]].sort_by_number[length].first||null>
+  - if <def[list].contains[<def[match]>]> {
+    - determine <def[match]>
+    } else if <def[list].filter[starts_with[<def[match]>]].size||0> > 0 {
+    - determine <def[list].filter[starts_with[<def[match]>]].sort_by_number[length].first||null>
+    } else if <def[list].filter[contains[<def[match]>]].size||0> > 0 {
+    - determine <def[list].filter[contains[<def[match]>]].sort_by_number[length].first||null>
     } else {
     - determine null
     }
