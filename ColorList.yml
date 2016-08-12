@@ -1,0 +1,50 @@
+DUL_ColorList:
+  type: procedure
+  debug: false
+  DUL:
+    author:
+    - Anthony
+    name:
+    - ColorList
+    description:
+    - Return colors from input or just list all colors
+    usage:
+    - <proc[DUL_colorlist].context[<list/match|input>]>
+    example:
+    - narrate <proc[DUL_colorlist].context[list]>
+    - narrate <proc[DUL_colorlist].context[match|blu]>
+
+  colors:
+    black: 0
+    dark_blue: 1
+    dark_green: 2
+    dark_aqua: 3
+    dark_red: 4
+    dark_purple: 5
+    gold: 6
+    gray: 7
+    dark_gray: 8
+    blue: 9
+    green: a
+    aqua: b
+    red: c
+    light_purple: d
+    yellow: e
+    white: f
+    magic: k
+    bold: l
+    strikethrough: m
+    underline: n
+    italic: o
+    reset: r
+
+  script:
+    - define colors '<script.list_keys[colors]>'
+    - choose '<def[1]>':
+      - case 'list':
+        - define list 'li@'
+        - foreach '<def[colors]>':
+          - define list '<def[list].include[<el@val[&<script.yaml_key[colors.%value%]>]> %value%]>'
+        - determine '<def[list]>'
+      - case 'match':
+        - determine '<proc[DUL_find_best_match].context[<def[colors]>|<def[2]>]>'
