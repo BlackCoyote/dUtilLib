@@ -17,6 +17,7 @@ DUL_find_best_match:
   - foreach '<def[l]>':
     - define list '<def[list].include[<def[%loop_index%]>]>'
   - define match '<def[list].last>'
+  - define list '<def[list].remove[<def[list].size>]>'
   - if <def[list].is_empty||true> {
     - debug error "DUL - No valid list specified!"
     - determine null
