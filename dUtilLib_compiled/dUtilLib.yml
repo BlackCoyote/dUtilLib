@@ -242,7 +242,7 @@ DUL_rainbow_text:
   - define result ""
   - foreach <def[1].unescaped.to_list.escape_contents>:
     - define result "<def[result]><def[colormap].get[<def[loop_index].sub[1].mod[7].add[1].as_int>]><def[value]>"
-  - determine <def[result]>
+  - determine <def[result].unescaped>
 DUL_random_surface_block:
   type: procedure
   definitions: location|radius
