@@ -7,9 +7,9 @@ DUL_rainbow_text:
     description:
     - Turns the colour of a text into a rainbow format with a new colour per letter.
     usage:
-    - <proc[DUL_rainbow_text].context[<text>]>
+    - <proc[DUL_rainbow_text].context[<text.escaped>]>
     example:
-    - <proc[DUL_rainbow_text].context[I am pretty!]>
+    - <proc[DUL_rainbow_text].context[<context.message.escaped>]>
   script:
   - if <def[1].exists.not> {
     - debug error "DUL - No valid text specified!"
@@ -17,6 +17,6 @@ DUL_rainbow_text:
     }
   - define colormap li@&4|&6|&e|&a|&3|&9|&5
   - define result ""
-  - foreach <def[1].to_list>:
+  - foreach <def[1].unescaped.to_list.escape_contents>:
     - define result "<def[result]><def[colormap].get[<def[loop_index].sub[1].mod[7].add[1].as_int>]><def[value]>"
   - determine <def[result].parse_color>
