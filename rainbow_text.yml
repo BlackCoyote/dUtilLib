@@ -15,8 +15,8 @@ DUL_rainbow_text:
     - debug error "DUL - No valid text specified!"
     - determine null
     }
-  - define colormap li@&4|&6|&e|&a|&3|&9|&5
+  - define colormap li@<&4>|<&6>|<&e>|<&a>|<&3>|<&9>|<&5>
   - define result ""
   - foreach <def[1].unescaped.to_list.escape_contents>:
-    - define result "<def[result]><def[colormap].get[<def[loop_index].sub[1].mod[7].add[1].as_int>].parse_color><def[value]>"
+    - define result "<def[result]><def[colormap].get[<def[loop_index].sub[1].mod[7].add[1].as_int>]><def[value]>"
   - determine <def[result]>
