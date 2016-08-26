@@ -173,7 +173,7 @@ DUL_find_best_match:
     example:
     - <proc[DUL_find_best_match].context[<server.flag[homes].as_list>|<context.args.get[1]>]>
   script:
-  - define l '<queue.definitions.numerical>'
+  - define l '<queue.definitions.exclude[raw_context].numerical>'
   - define list 'li@'
   - foreach '<def[l]>':
     - define list '<def[list].include[<def[%loop_index%]>]>'
@@ -379,7 +379,7 @@ DUL_version_script:
   name: dUtilLib
   id: 96
   description: A collection of dscript functions and utilities written by BlackCoyote and Anthony.
-  version: 8
+  version: 9
 DUL_WRCG:
   type: procedure
   debug: false
@@ -396,7 +396,7 @@ DUL_WRCG:
     - give <proc[DUL_WRCG].context[10/i@apple|1/i@gold_ingot|20/i@stone]>
   script:
     - define l 'li@'
-    - foreach '<queue.definitions.exclude[l]>':
+    - foreach '<queue.definitions.exclude[l|raw_context]>':
       - define l '<def[l].include[<def[%value%]>]>'
     - define w '0'
     - foreach '<def[l].parse[before[/]]>':

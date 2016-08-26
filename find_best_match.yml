@@ -12,7 +12,7 @@ DUL_find_best_match:
     example:
     - <proc[DUL_find_best_match].context[<server.flag[homes].as_list>|<context.args.get[1]>]>
   script:
-  - define l '<queue.definitions.numerical>'
+  - define l '<queue.definitions.exclude[raw_context].numerical>'
   - define list 'li@'
   - foreach '<def[l]>':
     - define list '<def[list].include[<def[%loop_index%]>]>'
