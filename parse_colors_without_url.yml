@@ -1,0 +1,25 @@
+DUL_parse_colors_without_url:
+  type: procedure
+  debug: false
+  DUL:
+    author:
+    - BlackCoyote
+    description:
+    - parses the color codes in the input whilst skipping the ones within URLs.
+    usage:
+    - <proc[DUL_parse_colors_without_url].context[<escape message>]>
+    example:
+    - <proc[DUL_parse_colors_without_url].context[<context.message.escaped>]>
+  script:
+  - if <def[1]||null> == null {
+    - determine null
+    }
+  - define message ""
+  - foreach <def[1].split_by[<&sp>]>:
+    - define string <def[value].unescaped>
+    - if <def[string].starts_with[http<&co>//]> || <def[string].starts_with[https<&co>//]> || <def[string].starts_with[www.]> {
+      - define message "<def[message]><def[string]> "
+      } else {
+      - define message "<def[message]><def[string].parse_color> "
+      }
+  - determine <def[message]>
