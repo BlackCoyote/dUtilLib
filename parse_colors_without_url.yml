@@ -22,4 +22,4 @@ DUL_parse_colors_without_url:
       } else {
       - define message "<def[message]><def[string].parse_color> "
       }
-  - determine <def[message]>
+  - determine <def[message].trim>
