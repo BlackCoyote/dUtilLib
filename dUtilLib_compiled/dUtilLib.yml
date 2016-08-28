@@ -2,6 +2,8 @@ DUL_colorcode_message:
   type: procedure
   debug: false
   DUL:
+    name:
+    - Colorcode Message
     author:
     - BlackCoyote
     description:
@@ -172,7 +174,7 @@ DUL_cuboid_vertices:
     usage:
     - <proc[DUL_cuboid_vertices].context[%loc1%|%loc2%]>
     example:
-    - <proc[DUL_cuboid_vertices].context[<l@0,0,0,world>|<l@1,1,1,world>]>
+    - <proc[DUL_cuboid_vertices].context[l@0,0,0,world|l@5,4,3,world]>
 
   script:
     - define lx '<def[1].x>'
@@ -222,19 +224,22 @@ DUL_cuboid_overlap:
     author:
     - Anthony
     name:
-    - Cuboid Vertices
+    - Cuboid Overlap
     description:
     - Returns a cuboid object from 2 overlapping cuboids
     usage:
     - <proc[DUL_cuboid_overlap].context[%cuboid1%|%cuboid2%]>
     example:
-    - <proc[DUL_cuboid_overlap].context[<cu@0,0,0,world|l@4,4,4,world>|<cu@3,3,3,world|l@5,5,5,world>]>
+    - <proc[DUL_cuboid_overlap].context[cu@0,0,0,world|4,4,4,world|cu@3,3,3,world|5,5,5,world]>
 
   script:
   # Reconstruct cuboids from list
     - define objects '<def[raw_context].as_list>'
     - define 'c1' '<def[objects].get[1].to[2].as_cuboid>'
     - define 'c2' '<def[objects].get[3].to[4].as_cuboid>'
+    - if <def[c1].intersects[%c2%].not> {
+      - determine null
+      }
     - define 1l '<def[c1].min>'
     - define 1h '<def[c1].max>'
     - define world '<def[1l].world.name>'
@@ -252,42 +257,12 @@ DUL_cuboid_overlap:
     - define 2hx '<def[2h].x>'
     - define 2hy '<def[2h].y>'
     - define 2hz '<def[2h].z>'
-    - if ( %1lx% >= %2lx% ) && ( %1lx% <= %2hx% ) {
-      - define flx '%1lx%'
-      }
-      else {
-      - define flx '%2lx%'
-      }
-    - if ( %1ly% >= %2ly% ) && ( %1ly% <= %2hy% ) {
-      - define fly '%1ly%'
-      }
-      else {
-      - define fly '%2ly%'
-      }
-    - if ( %1lz% >= %2lz% ) && ( %1lz% <= %2hz% ) {
-      - define flz '%1lz%'
-      }
-      else {
-      - define flz '%2lz%'
-      }
-    - if ( %1hx% >= %2lx% ) && ( %1hx% <= %2hx% ) {
-      - define fhx '%1hx%'
-      }
-      else {
-      - define fhx '%2hx%'
-      }
-    - if ( %1hy% >= %2ly% ) && ( %1hy% <= %2hy% ) {
-      - define fhy '%1hy%'
-      }
-      else {
-      - define fhy '%2hy%'
-      }
-    - if ( %1hz% >= %2lz% ) && ( %1hz% <= %2hz% ) {
-      - define fhz '%1hz%'
-      }
-      else {
-      - define fhz '%2hz%'
-      }
+    - define flx '<def[1lx].max[%2lx%].max[<def[1lx].min[%2hx%]>].round>'
+    - define fly '<def[1ly].max[%2ly%].max[<def[1ly].min[%2hy%]>].round>'
+    - define flz '<def[1lz].max[%2lz%].max[<def[1lz].min[%2hz%]>].round>'
+    - define fhx '<def[1hx].max[%2lx%].min[<def[1hx].min[%2hx%]>].round>'
+    - define fhy '<def[1hy].max[%2ly%].min[<def[1hy].min[%2hy%]>].round>'
+    - define fhz '<def[1hz].max[%2lz%].min[<def[1hz].min[%2hz%]>].round>'
     - determine 'cu@%flx%,%fly%,%flz%,%world%|%fhx%,%fhy%,%fhz%,%world%'
 
 
@@ -337,42 +312,12 @@ DUL_cuboid_shell:
           - define 2hx '<def[2h].x>'
           - define 2hy '<def[2h].y>'
           - define 2hz '<def[2h].z>'
-          - if ( %1lx% >= %2lx% ) && ( %1lx% <= %2hx% ) {
-            - define flx '%1lx%'
-            }
-            else {
-            - define flx '%2lx%'
-            }
-          - if ( %1ly% >= %2ly% ) && ( %1ly% <= %2hy% ) {
-            - define fly '%1ly%'
-            }
-            else {
-            - define fly '%2ly%'
-            }
-          - if ( %1lz% >= %2lz% ) && ( %1lz% <= %2hz% ) {
-            - define flz '%1lz%'
-            }
-            else {
-            - define flz '%2lz%'
-            }
-          - if ( %1hx% >= %2lx% ) && ( %1hx% <= %2hx% ) {
-            - define fhx '%1hx%'
-            }
-            else {
-            - define fhx '%2hx%'
-            }
-          - if ( %1hy% >= %2ly% ) && ( %1hy% <= %2hy% ) {
-            - define fhy '%1hy%'
-            }
-            else {
-            - define fhy '%2hy%'
-            }
-          - if ( %1hz% >= %2lz% ) && ( %1hz% <= %2hz% ) {
-            - define fhz '%1hz%'
-            }
-            else {
-            - define fhz '%2hz%'
-            }
+          - define flx '<def[1lx].max[%2lx%].max[<def[1lx].min[%2hx%]>].round>'
+          - define fly '<def[1ly].max[%2ly%].max[<def[1ly].min[%2hy%]>].round>'
+          - define flz '<def[1lz].max[%2lz%].max[<def[1lz].min[%2hz%]>].round>'
+          - define fhx '<def[1hx].max[%2lx%].min[<def[1hx].min[%2hx%]>].round>'
+          - define fhy '<def[1hy].max[%2ly%].min[<def[1hy].min[%2hy%]>].round>'
+          - define fhz '<def[1hz].max[%2lz%].min[<def[1hz].min[%2hz%]>].round>'
           - define oShell 'cu@l@%flx%,%fly%,%flz%,%world%|l@%fhx%,%fhy%,%flz%,%world%|l@%flx%,%fly%,%flz%,%world%|l@%flx%,%fhy%,%fhz%,%world%|l@%flx%,%fly%,%flz%,%world%|l@%fhx%,%fly%,%fhz%,%world%|l@%fhx%,%fhy%,%fhz%,%world%|l@%flx%,%fly%,%fhz%,%world%|l@%fhx%,%fhy%,%fhz%,%world%|l@%fhx%,%fly%,%flz%,%world%|l@%fhx%,%fhy%,%fhz%,%world%|l@%flx%,%fhy%,%flz%,%world%'
           - define overLaps '<def[overlaps].include[<def[oShell].blocks>]>'
           }
@@ -417,6 +362,8 @@ DUL_find_best_match:
   type: procedure
   debug: false
   DUL:
+    name:
+    - Find Best Match
     author:
     - BlackCoyote
     - Anthony
@@ -448,6 +395,8 @@ DUL_hidden_spawn_locations:
   debug: false
   definitions: location|radius
   DUL:
+    name:
+    - Hidden Spawn Locations
     author:
     - BlackCoyote
     description:
@@ -497,6 +446,8 @@ DUL_rainbow_text:
   type: procedure
   debug: false
   DUL:
+    name:
+    - Rainbow Text
     author:
     - BlackCoyote
     description:
@@ -520,6 +471,8 @@ DUL_random_surface_block:
   definitions: location|radius
   debug: false
   DUL:
+    name:
+    - Random Surface Block
     author:
     - BlackCoyote
     description:
@@ -591,6 +544,8 @@ DUL_text_progress_bar:
   type: procedure
   debug: false
   DUL:
+    name:
+    - Text Progress Bar
     author:
     - BlackCoyote
     description:
@@ -632,6 +587,8 @@ DUL_unique_queue_id_prefixed:
   type: procedure
   debug: false
   DUL:
+    name:
+    - Unique Queue ID Prefixed
     author:
     - BlackCoyote
     description:
@@ -646,12 +603,31 @@ DUL_unique_queue_id_prefixed:
   - while <queue.list.parse[id].contains[<def[id]>]>:
     - define id <def[prefix]><util.random.duuid>
   - determine <def[id]>
+DUL_unparse_colors:
+  type: procedure
+  debug: false
+  DUL:
+    name:
+    - Unparse Colors
+    author:
+    - BlackCoyote
+    description:
+    - unparses all the colors in your input
+    usage:
+    - <proc[DUL_unparse_colors].context[<escape message>]>
+    example:
+    - <proc[DUL_unparse_colors].context[<context.message.escaped>]>
+  script:
+  - if <def[1]||null> == null {
+    - determine null
+    }
+  - determine <def[1].unescaped.replace[<&ss>].with[&]>
 DUL_version_script:
   type: version
   name: dUtilLib
   id: 96
   description: A collection of dscript functions and utilities written by BlackCoyote and Anthony.
-  version: 11
+  version: 12
 DUL_WRCG:
   type: procedure
   debug: false
