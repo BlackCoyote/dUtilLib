@@ -2,6 +2,8 @@ DUL_parse_colors_without_url:
   type: procedure
   debug: false
   DUL:
+    name:
+    - Parse Colors Without URL
     author:
     - BlackCoyote
     description:
