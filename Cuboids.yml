@@ -1,0 +1,254 @@
+DUL_cuboid_vertices:
+  type: procedure
+  debug: false
+  DUL:
+    author:
+    - Anthony
+    name:
+    - Cuboid Vertices
+    description:
+    - Return the list of cuboid vertices from a location pair.
+    usage:
+    - <proc[DUL_cuboid_vertices].context[%loc1%|%loc2%]>
+    example:
+    - <proc[DUL_cuboid_vertices].context[<l@0,0,0,world>|<l@1,1,1,world>]>
+
+  script:
+    - define lx '<def[1].x>'
+    - define ly '<def[1].y>'
+    - define lz '<def[1].z>'
+    - define hx '<def[2].x>'
+    - define hy '<def[2].y>'
+    - define hz '<def[2].z>'
+    - define world '<def[1].world.name>'
+    - determine 'li@l@<def[lx]>,<def[ly]>,<def[lz]>,<def[world]>|l@<def[lx]>,<def[hy]>,<def[lz]>,<def[world]>|l@<def[lx]>,<def[ly]>,<def[hz]>,<def[world]>|l@<def[hx]>,<def[ly]>,<def[lz]>,<def[world]>|l@<def[hx]>,<def[hy]>,<def[hz]>,<def[world]>|l@<def[lx]>,<def[hy]>,<def[hz]>,<def[world]>|l@<def[hx]>,<def[hy]>,<def[lz]>,<def[world]>|l@<def[hx]>,<def[ly]>,<def[hz]>,<def[world]>'
+
+
+# Scrapped for flames, keeping for lulz
+#DUL_cuboid_vertices:
+#  type: procedure
+#  debug: false
+#  DUL:
+#    author:
+#    - Anthony
+#    name:
+#    - Cuboid Vertices
+#    description:
+#    - Return the list of cuboid vertices from a location pair.
+#    usage:
+#    - <proc[DUL_cuboid_vertices].context[%loc1%|%loc2%]>
+#    example:
+#    - <proc[DUL_cuboid_vertices].context[<l@0,0,0,world>|<l@1,1,1,world>]>
+
+#  script:
+#    - define world '<def[1].world.name>'
+#    - foreach 'li@x|y|z':
+#      - define %value%pair 'li@<def[1].%value%>|<def[2].%value%>'
+#    - define vertlist 'li@'
+#    - foreach '<def[xpair]>':
+#      - define x '%value%'
+#      - foreach '<def[ypair]>':
+#        - define y '%value%'
+#        - foreach '<def[zpair]>':
+#          - define vertlist '<def[vertlist].include[l@%x%,%y%,%value%,%world%]>'
+#    - determine '%vertlist%'
+
+
+DUL_cuboid_overlap:
+  type: procedure
+  debug: false
+  DUL:
+    author:
+    - Anthony
+    name:
+    - Cuboid Vertices
+    description:
+    - Returns a cuboid object from 2 overlapping cuboids
+    usage:
+    - <proc[DUL_cuboid_overlap].context[%cuboid1%|%cuboid2%]>
+    example:
+    - <proc[DUL_cuboid_overlap].context[<cu@0,0,0,world|l@4,4,4,world>|<cu@3,3,3,world|l@5,5,5,world>]>
+
+  script:
+  # Reconstruct cuboids from list
+    - define objects '<def[raw_context].as_list>'
+    - define 'c1' '<def[objects].get[1].to[2].as_cuboid>'
+    - define 'c2' '<def[objects].get[3].to[4].as_cuboid>'
+    - define 1l '<def[c1].min>'
+    - define 1h '<def[c1].max>'
+    - define world '<def[1l].world.name>'
+    - define 1lx '<def[1l].x>'
+    - define 1ly '<def[1l].y>'
+    - define 1lz '<def[1l].z>'
+    - define 1hx '<def[1h].x>'
+    - define 1hy '<def[1h].y>'
+    - define 1hz '<def[1h].z>'
+    - define 2l '<def[c2].min>'
+    - define 2h '<def[c2].max>'
+    - define 2lx '<def[2l].x>'
+    - define 2ly '<def[2l].y>'
+    - define 2lz '<def[2l].z>'
+    - define 2hx '<def[2h].x>'
+    - define 2hy '<def[2h].y>'
+    - define 2hz '<def[2h].z>'
+    - if ( %1lx% >= %2lx% ) && ( %1lx% <= %2hx% ) {
+      - define flx '%1lx%'
+      }
+      else {
+      - define flx '%2lx%'
+      }
+    - if ( %1ly% >= %2ly% ) && ( %1ly% <= %2hy% ) {
+      - define fly '%1ly%'
+      }
+      else {
+      - define fly '%2ly%'
+      }
+    - if ( %1lz% >= %2lz% ) && ( %1lz% <= %2hz% ) {
+      - define flz '%1lz%'
+      }
+      else {
+      - define flz '%2lz%'
+      }
+    - if ( %1hx% >= %2lx% ) && ( %1hx% <= %2hx% ) {
+      - define fhx '%1hx%'
+      }
+      else {
+      - define fhx '%2hx%'
+      }
+    - if ( %1hy% >= %2ly% ) && ( %1hy% <= %2hy% ) {
+      - define fhy '%1hy%'
+      }
+      else {
+      - define fhy '%2hy%'
+      }
+    - if ( %1hz% >= %2lz% ) && ( %1hz% <= %2hz% ) {
+      - define fhz '%1hz%'
+      }
+      else {
+      - define fhz '%2hz%'
+      }
+    - determine 'cu@%flx%,%fly%,%flz%,%world%|%fhx%,%fhy%,%fhz%,%world%'
+
+
+DUL_cuboid_shell:
+  type: procedure
+  debug: false
+  DUL:
+    author:
+    - Anthony
+    name:
+    - Cuboid Shell
+    description:
+    - Supply a list of cuboids and returns the list of surface locations.
+    usage:
+    - <proc[DUL_cuboid_shell].context[<cuboid>|...]>
+    example:
+    - <proc[DUL_cuboid_shell].context[<cuboid>|...]>
+  script:
+  # Reconstruct cuboids from list
+    - define objects '<def[raw_context].as_list>'
+    - define clist 'li@'
+    - repeat '<def[objects].size.div[2].round>':
+      - define 'cuboid%value%' '<def[objects].get[<def[value].mul[2].sub[1].round>].to[<def[value].mul[2].round>]>'
+      - define clist '<def[clist].include[cuboid%value%]>'
+    - define blocks 'li@'
+    - define overLaps 'li@'
+    - foreach '%clist%':
+      - define olist '<def[clist].remove[%loop_index%]>'
+      - define cuboid '<def[%value%].as_cuboid>'
+      - define 1l '<def[cuboid].min>'
+      - define 1h '<def[cuboid].max>'
+      - define world '<def[1h].world.name>'
+      - define 1lx '<def[1l].x>'
+      - define 1ly '<def[1l].y>'
+      - define 1lz '<def[1l].z>'
+      - define 1hx '<def[1h].x>'
+      - define 1hy '<def[1h].y>'
+      - define 1hz '<def[1h].z>'
+      - foreach '%olist%':
+        - define this '<def[%value%].as_cuboid>'
+        - if <def[cuboid].intersects[%this%]> {
+          - define 2l '<def[this].min>'
+          - define 2h '<def[this].max>'
+          - define 2lx '<def[2l].x>'
+          - define 2ly '<def[2l].y>'
+          - define 2lz '<def[2l].z>'
+          - define 2hx '<def[2h].x>'
+          - define 2hy '<def[2h].y>'
+          - define 2hz '<def[2h].z>'
+          - if ( %1lx% >= %2lx% ) && ( %1lx% <= %2hx% ) {
+            - define flx '%1lx%'
+            }
+            else {
+            - define flx '%2lx%'
+            }
+          - if ( %1ly% >= %2ly% ) && ( %1ly% <= %2hy% ) {
+            - define fly '%1ly%'
+            }
+            else {
+            - define fly '%2ly%'
+            }
+          - if ( %1lz% >= %2lz% ) && ( %1lz% <= %2hz% ) {
+            - define flz '%1lz%'
+            }
+            else {
+            - define flz '%2lz%'
+            }
+          - if ( %1hx% >= %2lx% ) && ( %1hx% <= %2hx% ) {
+            - define fhx '%1hx%'
+            }
+            else {
+            - define fhx '%2hx%'
+            }
+          - if ( %1hy% >= %2ly% ) && ( %1hy% <= %2hy% ) {
+            - define fhy '%1hy%'
+            }
+            else {
+            - define fhy '%2hy%'
+            }
+          - if ( %1hz% >= %2lz% ) && ( %1hz% <= %2hz% ) {
+            - define fhz '%1hz%'
+            }
+            else {
+            - define fhz '%2hz%'
+            }
+          - define oShell 'cu@l@%flx%,%fly%,%flz%,%world%|l@%fhx%,%fhy%,%flz%,%world%|l@%flx%,%fly%,%flz%,%world%|l@%flx%,%fhy%,%fhz%,%world%|l@%flx%,%fly%,%flz%,%world%|l@%fhx%,%fly%,%fhz%,%world%|l@%fhx%,%fhy%,%fhz%,%world%|l@%flx%,%fly%,%fhz%,%world%|l@%fhx%,%fhy%,%fhz%,%world%|l@%fhx%,%fly%,%flz%,%world%|l@%fhx%,%fhy%,%fhz%,%world%|l@%flx%,%fhy%,%flz%,%world%'
+          - define overLaps '<def[overlaps].include[<def[oShell].blocks>]>'
+          }
+      - define shell 'cu@l@%1lx%,%1ly%,%1lz%,%world%|l@%1hx%,%1hy%,%1lz%,%world%|l@%1lx%,%1ly%,%1lz%,%world%|l@%1lx%,%1hy%,%1hz%,%world%|l@%1lx%,%1ly%,%1lz%,%world%|l@%1hx%,%1ly%,%1hz%,%world%|l@%1hx%,%1hy%,%1hz%,%world%|l@%1lx%,%1ly%,%1hz%,%world%|l@%1hx%,%1hy%,%1hz%,%world%|l@%1hx%,%1ly%,%1lz%,%world%|l@%1hx%,%1hy%,%1hz%,%world%|l@%1lx%,%1hy%,%1lz%,%world%'
+      - define blocks '<def[blocks].include[<def[shell].blocks>]>'
+    - determine '<def[blocks].deduplicate.exclude[<def[overLaps].deduplicate>]>'
+
+#
+# Just a some commands to play with
+#
+#DUL_Commands_ShowOverlap:
+#  type: command
+#  debug: false
+#  name: showoverlap
+#  description: Show the overlapping area of two cuboids
+#  usage: /showoverlap
+#  aliases: ''
+
+#  tab complete:
+#    - determine 'li@'
+
+#  script:
+#    - showfake m@white_stained_glass <proc[DUL_cuboid_shell].context[<proc[DUL_cuboid_overlap].context[<c.args.get[1].as_cuboid>|<c.args.get[2].as_cuboid>]>]> to:<player> d:<player.flag[dWE.show].split[/].get[2]||10>s
+
+
+#DUL_Commands_Showshell:
+#  type: command
+#  debug: false
+#  name: showshell
+#  description: Show the shell of two cuboids
+#  usage: /showshell
+#  aliases: ''
+
+#  tab complete:
+#    - determine 'li@'
+
+#  script:
+#    - showfake m@white_stained_glass <proc[DUL_cuboid_shell].context[<c.args.get[1].as_cuboid>|<c.args.get[2].as_cuboid>]> to:<player> d:<player.flag[dWE.show].split[/].get[2]||10>s
+
+#
