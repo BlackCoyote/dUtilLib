@@ -3,6 +3,8 @@ DUL_random_surface_block:
   definitions: location|radius
   debug: false
   DUL:
+    name:
+    - Random Surface Block
     author:
     - BlackCoyote
     description:

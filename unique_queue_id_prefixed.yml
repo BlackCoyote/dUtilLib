@@ -2,6 +2,8 @@ DUL_unique_queue_id_prefixed:
   type: procedure
   debug: false
   DUL:
+    name:
+    - Unique Queue ID Prefixed
     author:
     - BlackCoyote
     description:

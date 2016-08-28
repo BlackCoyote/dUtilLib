@@ -3,6 +3,8 @@ DUL_hidden_spawn_locations:
   debug: false
   definitions: location|radius
   DUL:
+    name:
+    - Hidden Spawn Locations
     author:
     - BlackCoyote
     description:

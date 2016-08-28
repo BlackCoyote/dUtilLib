@@ -2,6 +2,8 @@ DUL_text_progress_bar:
   type: procedure
   debug: false
   DUL:
+    name:
+    - Text Progress Bar
     author:
     - BlackCoyote
     description:

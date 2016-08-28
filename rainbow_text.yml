@@ -2,6 +2,8 @@ DUL_rainbow_text:
   type: procedure
   debug: false
   DUL:
+    name:
+    - Rainbow Text
     author:
     - BlackCoyote
     description:

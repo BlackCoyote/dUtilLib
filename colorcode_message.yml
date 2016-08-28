@@ -2,6 +2,8 @@ DUL_colorcode_message:
   type: procedure
   debug: false
   DUL:
+    name:
+    - Colorcode Message
     author:
     - BlackCoyote
     description:
