@@ -1,0 +1,19 @@
+DUL_unparse_colors:
+  type: procedure
+  debug: false
+  DUL:
+    name:
+    - Unparse Colors
+    author:
+    - BlackCoyote
+    description:
+    - unparses all the colors in your input
+    usage:
+    - <proc[DUL_unparse_colors].context[<escape message>]>
+    example:
+    - <proc[DUL_unparse_colors].context[<context.message.escaped>]>
+  script:
+  - if <def[1]||null> == null {
+    - determine null
+    }
+  - determine <def[1].unescaped.replace[<&ss>].with[&]>
