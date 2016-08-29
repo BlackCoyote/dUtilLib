@@ -1,0 +1,32 @@
+DUL_random_numbers_by_total:
+  type: procedure
+  debug: false
+  DUL:
+    name:
+    - Random Numbers by Total
+    author:
+    - BlackCoyote
+    description:
+    - returns the specified amount of random positive integer numbers that always add up to the specified total.
+    usage:
+    - <proc[DUL_parse_colors_without_url].context[<amount>|<total>]>
+    example:
+    - <proc[DUL_parse_colors_without_url].context[5|100]>
+  definitions: amount|total
+  script:
+    - if <def[amount]||null> !matches number {
+      - debug error "DUL - No valid amount specified."
+      - determine null
+      }
+    - if <def[total]||null> !matches number {
+      - debug error "DUL - No valid total specified."
+      - determine null
+      }
+    - define numbers li@
+    - define currenttotal 0
+    - repeat <def[amount].sub[1].round>:
+      - define numbers <def[numbers].include[<util.random.int[1].to[<def[total].sub[<def[currenttotal]>].sub[<def[amount].sub[<def[value]>]>].round>]>]>
+      # new number = random int from 1 to ( specified total - current total - ( specified amount - current amount ) ) fml i hate math
+      - define currenttotal <def[currenttotal].add[<def[numbers].last>]>
+    - define numbers <def[numbers].include[<def[total].sub[<def[currenttotal]>]>]>
+    - determine <def[numbers].random[<def[amount]>]>
