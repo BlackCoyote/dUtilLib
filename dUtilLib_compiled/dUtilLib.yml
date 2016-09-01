@@ -479,9 +479,9 @@ DUL_random_numbers_by_total:
     description:
     - returns the specified amount of random positive integer numbers that always add up to the specified total.
     usage:
-    - <proc[DUL_parse_colors_without_url].context[<amount>|<total>]>
+    - <proc[DUL_random_numbers_by_total].context[<amount>|<total>]>
     example:
-    - <proc[DUL_parse_colors_without_url].context[5|100]>
+    - <proc[DUL_random_numbers_by_total].context[5|100]>
   definitions: amount|total
   script:
     - if <def[amount]||null> !matches number {
@@ -573,7 +573,7 @@ DUL_script_tracker:
   debug: false
   events:
     on system time hourly:
-    - webget "http://morphanone.space/webizen.aspx/tracker?script=96&version=<s@DUL_version_script.yaml_key[version]>"
+    - webget "http://stats.denizenscript.com/tracker?script=96&version=<s@DUL_version_script.yaml_key[version]>"
 DUL_text_progress_bar:
   type: procedure
   debug: false
@@ -661,7 +661,7 @@ DUL_version_script:
   name: dUtilLib
   id: 96
   description: A collection of dscript functions and utilities written by BlackCoyote and Anthony.
-  version: 13
+  version: 14
 DUL_WRCG:
   type: procedure
   debug: false
