@@ -1,0 +1,16 @@
+DUL_Astar_default_neighbours:
+  type: procedure
+  debug: false
+  DUL:
+    author:
+    - BlackCoyote
+    name:
+    - A* Pathfinder default neighbours
+    description:
+    - Returns the neighbours of a location, as required for the A* pathfinder.
+    usage:
+    - <proc[DUL_Astar_default_neighbours].context[<location>]>
+    example:
+    - give <proc[DUL_Astar_default_neighbours].context[<def[location]>]>
+  script:
+  - determine <def[1].find.surface_blocks.within[1]||li@>
