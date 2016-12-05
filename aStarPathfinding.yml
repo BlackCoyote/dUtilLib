@@ -9,14 +9,15 @@ DUL_Astar:
     description:
     - Returns a path from one location to another, using the A* algorithm
     usage:
-    - <proc[DUL_Astar].context[start|destination(|max loops|neighbour procedure)]>
+    - <proc[DUL_Astar].context[start|destination(|precision|max loops|neighbour procedure)]>
     example:
     - give <proc[DUL_Astar].context[<npc.location>|<npc.flag[spawn_location]>]>
   script:
   - define origin <def[1]||null>
   - define destination <def[2]||null>
-  - define max_loops <def[3]||25000>
-  - define neighbour_procedure <def[4]||DUL_Astar_default_neighbours>
+  - define precision <def[3]||2>
+  - define max_loops <def[4]||25000>
+  - define neighbour_procedure <def[5]||DUL_Astar_default_neighbours>
   # initiate the open and closed lists, include the origin as a value to open
   - define open li@0/<def[origin]>/null
   - define closed li@
@@ -40,7 +41,7 @@ DUL_Astar:
     # loop through each neighbour node
     - foreach <def[neighbours]>:
       # if the neighbour is within the threshold distance from the destination, stop the search loop
-      - if <def[value].as_location.distance[<def[destination]>]> < 15 {
+      - if <def[value].as_location.distance[<def[destination]>]> < <def[precision]> {
         # store the final node at which the path was completed separately
         - define final "0/<def[value].as_location>/parent_<def[parent_id]>"
         - while stop

@@ -13,4 +13,5 @@ DUL_Astar_default_neighbours:
     example:
     - give <proc[DUL_Astar_default_neighbours].context[<def[location]>]>
   script:
-  - determine <def[1].find.surface_blocks.within[1]||li@>
+  # this needs to be better
+  - determine <def[1].find.surface_blocks.within[2]||li@>
