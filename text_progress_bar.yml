@@ -9,7 +9,7 @@ DUL_text_progress_bar:
     description:
     - Makes a text based progress bar based on the percentage you provide.
     usage:
-    - <proc[DUL_text_progress_bar].context[<percentage>(|<size>|<character>|<color1>|<color2>)]>
+    - <proc[DUL_text_progress_bar].context[<percentage>(|<size>|<character.escaped>|<color1>|<color2>)]>
     example:
     - <proc[DUL_text_progress_bar].context[<player.health.percentage>]>
   script:
@@ -24,7 +24,7 @@ DUL_text_progress_bar:
     - define max 10
     }
   - if <def[3].exists> {
-    - define char <def[3].substring[1,1]||=>
+    - define char <def[3].unescaped.substring[1,1]||=>
     } else {
     - define char =
     }
