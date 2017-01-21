@@ -1,0 +1,57 @@
+DUL_parsePrepend:
+  type: procedure
+  debug: false
+  DUL:
+    author:
+    - Anthony
+    name:
+    - String Prepender
+    description:
+    - Prepends a string to the beginning of each item in a list
+    usage:
+    - <proc[DUL_parsePrepend].context[prepender|<list>]>
+    example:
+    - narrate "<proc[DUL_parsePrepend].context[Number |1|2|3]>"
+  script:
+    - define e '<def[raw_context].as_list>'
+    - determine '<def[e].get[2].to[<def[e].size>].parse[replace[regex:^].with[<def[e].get[1]>]||li@>'
+
+DUL_parseAppend:
+  type: procedure
+  debug: false
+  DUL:
+    author:
+    - Anthony
+    name:
+    - String Appender
+    description:
+    - Appends a string to the end of each item in a list
+    usage:
+    - <proc[DUL_parseAppend].context[appender|<list>]>
+    example:
+    - narrate "<proc[DUL_parseAppend].context[ am awesome!|I|You|We]>"
+  script:
+    - define e '<def[raw_context].as_list>'
+    - determine '<def[e].get[2].to[<def[e].size>].parse[replace[regex:$].with[<def[e].get[1]>]||li@>'
+
+DUL_parseWrap:
+  type: procedure
+  debug: false
+  DUL:
+    author:
+    - Anthony
+    name:
+    - String Wrapper
+    description:
+    - Adds a prepender and an appender to each item in a list
+    usage:
+    - <proc[DUL_parseWrap].context[prepender|appender|<list>]>
+    example:
+    - narrate "<proc[DUL_parseWrap].context[Number |!|1|2|3]>"
+  script:
+    - define e '<def[raw_context].as_list>'
+    - determine '<def[e].get[3].to[<def[e].size>].parse[replace[regex:^].with[<def[e].get[1]>].parse[replace[regex:$].with[<def[e].get[2]>]||li@>'
+
+
+
+#
