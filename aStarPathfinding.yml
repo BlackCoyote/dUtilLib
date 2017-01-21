@@ -18,61 +18,36 @@ DUL_Astar:
   - define precision <def[3]||2>
   - define max_loops <def[4]||25000>
   - define neighbour_procedure <def[5]||DUL_Astar_default_neighbours>
-  # initiate the open and closed lists, include the origin as a value to open
   - define open li@0/<def[origin]>/null
   - define closed li@
-  # while we still have values to look through
   - while <def[open].is_empty.not||false>:
     - if <def[loop_index]> > <def[max_loops]> determine null
-    # define the ID of the current parent node as the value of the while loop
     - define parent_id <def[loop_index]>
-    # Q is the parent node, which is the entry in the open list with the smallest cost (get1 since we sort this list alphanumerically when redefining)
     - define q <def[open].get[1]>
-    # fill the current parent ID's variable with the parent node's info
     - define parent_<def[parent_id]> <def[q]>
-    # remove the current parent from the open list
     - define open <def[open].exclude[<def[q]>]>
-    # get the location from the current parent
     - define q_loc <def[q].before_last[/].after[/].as_location>
-    # get the cost of the current parent
     - define q_f <def[q].before[/]>
-    # get all the eligible neighbours from the current parent
     - define neighbours <proc[<def[neighbour_procedure]>].context[<def[q_loc]>]>
-    # loop through each neighbour node
     - foreach <def[neighbours]>:
-      # if the neighbour is within the threshold distance from the destination, stop the search loop
       - if <def[value].as_location.distance[<def[destination]>]> < <def[precision]> {
-        # store the final node at which the path was completed separately
         - define final "0/<def[value].as_location>/parent_<def[parent_id]>"
         - while stop
         }
-      # define the cost for the current child node, based on its distance to the parent, its parent's cost, and its distance to the destination
       - define f <def[value].as_location.distance_squared[<def[q_loc]>].add[<def[q_f]>].add[<def[origin].distance_squared[<def[value].as_location>]>]>
-      # if the open list contains a node with the same location and a lower cost, we can dismiss this node
       - if <def[open].filter[before_last[/].after[/].is[==].to[<def[value].as_location>]].filter[before[/].is[less].than[<def[f]>]].is_empty.not> {
         - foreach next
         }
-      # if the closed list contains a node with the same location and a lower cost, we can dismiss this node
       - if <def[closed].filter[before_last[/].after[/].is[==].to[<def[value].as_location>]].filter[before[/].is[less].than[<def[f]>]].is_empty.not> {
         - foreach next
         }
-      # add this current node to the open list, 
-      # each added node will also contain an ID to which parent node it came from, this is used to trace back the direct path to the origin
-      # each node will contain the cost it took to get there, so that it can be compared with other locations
       - define open <def[open].include[<def[f]>/<def[value].as_location>/parent_<def[parent_id]>].alphanumeric>
-    # when we finished looping through the neighbours for a parent, we add the parent to the closed list
     - define closed <def[closed].include[<def[q]>]>
-  # at this point we reached our destination, we now have a list of nodes. Each node will have a link to its parent node (which is the node from which this current node was a neighbour node of) and now we simply backtrack every parent node starting from the destination, until we run out of parent nodes.
-  #
-  # for example the node cost/l@x,y,z,world/parent_50 has parent_50 as the parent's ID, if we now read <def[parent_50]> we get cost/l@x,y,z,world/parent_46, and so we trace back through every single parent involved with the successful neighbour untill we run out of parents which means we got the origin again
-  #
   - define path li@
   - if <def[final].exists.not> {
-    # no path found :(
     - determine null
     }
   - define parent <def[final].after_last[/]||null>
-  # now we basicly backtrack the entire node list, 
   - while true:
     - if <def[loop_index]> > <def[max_loops]> determine null
     - define current <def[<def[parent]>]||null>
@@ -83,3 +58,91 @@ DUL_Astar:
     - define path <def[path].include[<def[location]>]>
     - define parent <def[current].after_last[/]||null>
   - determine <def[path].reverse>
+
+# commented version, entirely commented out for laziness sake
+# DUL_Astar:
+  # type: procedure
+  # debug: false
+  # DUL:
+    # author:
+    # - BlackCoyote
+    # name:
+    # - A* Pathfinder
+    # description:
+    # - Returns a path from one location to another, using the A* algorithm
+    # usage:
+    # - <proc[DUL_Astar].context[start|destination(|precision|max loops|neighbour procedure)]>
+    # example:
+    # - give <proc[DUL_Astar].context[<npc.location>|<npc.flag[spawn_location]>]>
+  # script:
+  # - define origin <def[1]||null>
+  # - define destination <def[2]||null>
+  # - define precision <def[3]||2>
+  # - define max_loops <def[4]||25000>
+  # - define neighbour_procedure <def[5]||DUL_Astar_default_neighbours>
+  # initiate the open and closed lists, include the origin as a value to open
+  # - define open li@0/<def[origin]>/null
+  # - define closed li@
+  # while we still have values to look through
+  # - while <def[open].is_empty.not||false>:
+    # - if <def[loop_index]> > <def[max_loops]> determine null
+    # define the ID of the current parent node as the value of the while loop
+    # - define parent_id <def[loop_index]>
+    # Q is the parent node, which is the entry in the open list with the smallest cost (get1 since we sort this list alphanumerically when redefining)
+    # - define q <def[open].get[1]>
+    # fill the current parent ID's variable with the parent node's info
+    # - define parent_<def[parent_id]> <def[q]>
+    # remove the current parent from the open list
+    # - define open <def[open].exclude[<def[q]>]>
+    # get the location from the current parent
+    # - define q_loc <def[q].before_last[/].after[/].as_location>
+    # get the cost of the current parent
+    # - define q_f <def[q].before[/]>
+    # get all the eligible neighbours from the current parent
+    # - define neighbours <proc[<def[neighbour_procedure]>].context[<def[q_loc]>]>
+    # loop through each neighbour node
+    # - foreach <def[neighbours]>:
+      # if the neighbour is within the threshold distance from the destination, stop the search loop
+      # - if <def[value].as_location.distance[<def[destination]>]> < <def[precision]> {
+        # store the final node at which the path was completed separately
+        # - define final "0/<def[value].as_location>/parent_<def[parent_id]>"
+        # - while stop
+        # }
+      # define the cost for the current child node, based on its distance to the parent, its parent's cost, and its distance to the destination
+      # - define f <def[value].as_location.distance_squared[<def[q_loc]>].add[<def[q_f]>].add[<def[origin].distance_squared[<def[value].as_location>]>]>
+      # if the open list contains a node with the same location and a lower cost, we can dismiss this node
+      # - if <def[open].filter[before_last[/].after[/].is[==].to[<def[value].as_location>]].filter[before[/].is[less].than[<def[f]>]].is_empty.not> {
+        # - foreach next
+        # }
+      # if the closed list contains a node with the same location and a lower cost, we can dismiss this node
+      # - if <def[closed].filter[before_last[/].after[/].is[==].to[<def[value].as_location>]].filter[before[/].is[less].than[<def[f]>]].is_empty.not> {
+        # - foreach next
+        # }
+      # add this current node to the open list, 
+      # each added node will also contain an ID to which parent node it came from, this is used to trace back the direct path to the origin
+      # each node will contain the cost it took to get there, so that it can be compared with other locations
+      # - define open <def[open].include[<def[f]>/<def[value].as_location>/parent_<def[parent_id]>].alphanumeric>
+    # when we finished looping through the neighbours for a parent, we add the parent to the closed list
+    # - define closed <def[closed].include[<def[q]>]>
+  # at this point we reached our destination, we now have a list of nodes. Each node will have a link to its parent node (which is the node from which this current node was a neighbour node of) and now we simply backtrack every parent node starting from the destination, until we run out of parent nodes.
+  #
+  # for example the node cost/l@x,y,z,world/parent_50 has parent_50 as the parent's ID, if we now read <def[parent_50]> we get cost/l@x,y,z,world/parent_46, and so we trace back through every single parent involved with the successful neighbour untill we run out of parents which means we got the origin again
+  #
+  # - define path li@
+  # - if <def[final].exists.not> {
+    # no path found :(
+    # - determine null
+    # }
+  # - define parent <def[final].after_last[/]||null>
+  # now we basicly backtrack the entire node list, 
+  # - while true:
+    # - if <def[loop_index]> > <def[max_loops]> determine null
+    # - define current <def[<def[parent]>]||null>
+    # - if <def[current]> == null {
+      # - while stop
+      # }
+    # - define location <def[current].before_last[/].after[/].as_location>
+    # - define path <def[path].include[<def[location]>]>
+    # - define parent <def[current].after_last[/]||null>
+  # - determine <def[path].reverse>
+
