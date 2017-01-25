@@ -11,7 +11,7 @@ DUL_Astar:
     usage:
     - <proc[DUL_Astar].context[start|destination(|precision|max loops|neighbour procedure)]>
     example:
-    - give <proc[DUL_Astar].context[<npc.location>|<npc.flag[spawn_location]>]>
+    - <proc[DUL_Astar].context[<npc.location>|<npc.flag[spawn_location]>]>
   script:
   - define origin <def[1]||null>
   - define destination <def[2]||null>
