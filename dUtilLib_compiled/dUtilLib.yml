@@ -11,7 +11,7 @@ DUL_Astar_default_neighbours:
     usage:
     - <proc[DUL_Astar_default_neighbours].context[<location>]>
     example:
-    - give <proc[DUL_Astar_default_neighbours].context[<def[location]>]>
+    - <proc[DUL_Astar_default_neighbours].context[<def[location]>]>
   script:
   # this needs to be better
   - determine <def[1].find.surface_blocks.within[2]||li@>
@@ -28,7 +28,7 @@ DUL_Astar:
     usage:
     - <proc[DUL_Astar].context[start|destination(|precision|max loops|neighbour procedure)]>
     example:
-    - give <proc[DUL_Astar].context[<npc.location>|<npc.flag[spawn_location]>]>
+    - <proc[DUL_Astar].context[<npc.location>|<npc.flag[spawn_location]>]>
   script:
   - define origin <def[1]||null>
   - define destination <def[2]||null>
@@ -523,6 +523,57 @@ DUL_cuboid_shell:
 #    - showfake m@white_stained_glass <proc[DUL_cuboid_shell].context[<c.args.get[1].as_cuboid>|<c.args.get[2].as_cuboid>]> to:<player> d:<player.flag[dWE.show].split[/].get[2]||10>s
 
 #
+DUL_duration_formatted_full:
+  type: procedure
+  debug: false
+  DUL:
+    author:
+    - BlackCoyote
+    name:
+    - Duration formatted full
+    description:
+    - Returns the duration as a formatted string, with full words.
+    - additionally, you can specify your own words for it to use.
+    usage:
+    - <proc[DUL_duration_formatted_full].context[<duration>(|<days_singular>|<days_plural<|<hours_SG>|<hours_PL>|<minutes_SG>|<minutes_PL<|<seconds_SG>|<seconds_PL>)]>
+    example:
+    - <proc[DUL_duration_formatted_full].context[d@30.180h]>
+  script:
+  - define duration <def[1].as_duration||null>
+  - if <def[duration]> == null {
+    - debug error "DUL - No valid duration specified!"
+    - determine null
+    }
+  - define return ""
+
+  - define d <def[duration].in_days.round_down>
+  - if <def[d]> > 1 {
+    - define return " <def[d]> <def[3]||days>"
+    } else if <def[d]> > 0 {
+    - define return " <def[d]> <def[2]||day>"
+    }
+  - define duration <def[duration].sub[d@<def[d]>d]>
+  - define h <def[duration].in_hours.round_down>
+  - if <def[h]> > 1 {
+    - define return "<def[return]> <def[h]> <def[5]||hours>"
+    } else if <def[h]> > 0 {
+    - define return "<def[return]> <def[h]> <def[4]||hour>"
+    }
+  - define duration <def[duration].sub[d@<def[h]>h]>
+  - define m <def[duration].in_minutes.round_down>
+  - if <def[m]> > 1 {
+    - define return "<def[return]> <def[m]> <def[5]||minutes>"
+    } else if <def[m]> > 0 {
+    - define return "<def[return]> <def[m]> <def[4]||minute>"
+    }
+  - define duration <def[duration].sub[d@<def[m]>m]>
+  - define s <def[duration].in_seconds.round_down>
+  - if <def[s]> > 1 {
+    - define return "<def[return]> <def[s]> <def[5]||seconds>"
+    } else if <def[s]> > 0 {
+    - define return "<def[return]> <def[s]> <def[4]||second>"
+    }
+  - determine <def[return].trim>
 DUL_find_best_match:
   type: procedure
   debug: false
@@ -582,6 +633,63 @@ DUL_hidden_spawn_locations:
     }
   - define radius <def[radius].as_int>
   - determine <def[location].find.surface_blocks.within[<def[radius]>].filter[y.sub[<def[location].y>].abs.is[less].than[3]].filter[above.above.above.material.name.is[==].to[air]].filter[above.above.above.above.material.name.is[==].to[air]].filter[above.above.above.above.above.material.name.is[==].to[air]].filter[material.is_occluding].parse[above].filter[above.center.line_of_sight[<def[location].add[0,1.5,0].center>].not]||<def[location].find.surface_blocks.within[<def[radius]>]||li@<def[location]>>>
+DUL_parsePrepend:
+  type: procedure
+  debug: false
+  DUL:
+    author:
+    - Anthony
+    name:
+    - String Prepender
+    description:
+    - Prepends a string to the beginning of each item in a list
+    usage:
+    - <proc[DUL_parsePrepend].context[prepender|<list>]>
+    example:
+    - narrate "<proc[DUL_parsePrepend].context[Number |1|2|3]>"
+  script:
+    - define e '<def[raw_context].as_list>'
+    - determine '<def[e].get[2].to[<def[e].size>].parse[replace[regex:^].with[<def[e].get[1]>]||li@>'
+
+DUL_parseAppend:
+  type: procedure
+  debug: false
+  DUL:
+    author:
+    - Anthony
+    name:
+    - String Appender
+    description:
+    - Appends a string to the end of each item in a list
+    usage:
+    - <proc[DUL_parseAppend].context[appender|<list>]>
+    example:
+    - narrate "<proc[DUL_parseAppend].context[ am awesome!|I|You|We]>"
+  script:
+    - define e '<def[raw_context].as_list>'
+    - determine '<def[e].get[2].to[<def[e].size>].parse[replace[regex:$].with[<def[e].get[1]>]||li@>'
+
+DUL_parseWrap:
+  type: procedure
+  debug: false
+  DUL:
+    author:
+    - Anthony
+    name:
+    - String Wrapper
+    description:
+    - Adds a prepender and an appender to each item in a list
+    usage:
+    - <proc[DUL_parseWrap].context[prepender|appender|<list>]>
+    example:
+    - narrate "<proc[DUL_parseWrap].context[Number |!|1|2|3]>"
+  script:
+    - define e '<def[raw_context].as_list>'
+    - determine '<def[e].get[3].to[<def[e].size>].parse[replace[regex:^].with[<def[e].get[1]>].parse[replace[regex:$].with[<def[e].get[2]>]||li@>'
+
+
+
+#
 DUL_parse_colors_without_url:
   type: procedure
   debug: false
@@ -696,6 +804,34 @@ DUL_random_surface_block:
       } else if <def[loop_index]> >= 10 {
       - determine null
       }
+DUL_rn:
+# An internally faster version
+  type: procedure
+  debug: false
+  DUL:
+    name:
+    - Random Numbers by Total
+    author:
+    - Anthony
+    description:
+    - returns the specified amount of random positive integer numbers that always add up to the specified total.
+    usage:
+    - <proc[DUL_rn].context[<amount>|<total>]>
+    example:
+    - <proc[DUL_rn].context[5|100]>
+  definitions: a|t
+  script:
+    - define r li@
+    - define s '%a%'
+    - while <def[s].is[MORE].than[1]>:
+      - define s '<def[s].sub[1].round>'
+      - define n '<util.random.int[1].to[<def[t].sub[%s%].round>]>'
+      - define t '<def[t].sub[%n%].round>'
+      - define r '%r%%n%|'
+    - define r '%r%%t%'
+    - determine <def[r].random[%a%]>
+
+#
 DUL_safeString:
   type: procedure
   debug: false
@@ -826,7 +962,7 @@ DUL_version_script:
   name: dUtilLib
   id: 96
   description: A collection of dscript functions and utilities written by BlackCoyote and Anthony.
-  version: 17
+  version: 18
 DUL_WRCG:
   type: procedure
   debug: false
