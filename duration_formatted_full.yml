@@ -1,0 +1,51 @@
+DUL_duration_formatted_full:
+  type: procedure
+  debug: false
+  DUL:
+    author:
+    - BlackCoyote
+    name:
+    - Duration formatted full
+    description:
+    - Returns the duration as a formatted string, with full words.
+    - additionally, you can specify your own words for it to use.
+    usage:
+    - <proc[DUL_duration_formatted_full].context[<duration>(|<days_singular>|<days_plural<|<hours_SG>|<hours_PL>|<minutes_SG>|<minutes_PL<|<seconds_SG>|<seconds_PL>)]>
+    example:
+    - <proc[DUL_duration_formatted_full].context[d@30.180h]>
+  script:
+  - define duration <def[1].as_duration||null>
+  - if <def[duration]> == null {
+    - debug error "DUL - No valid duration specified!"
+    - determine null
+    }
+  - define return ""
+
+  - define d <def[duration].in_days.round_down>
+  - if <def[d]> > 1 {
+    - define return " <def[d]> <def[3]||days>"
+    } else if <def[d]> > 0 {
+    - define return " <def[d]> <def[2]||day>"
+    }
+  - define duration <def[duration].sub[d@<def[d]>d]>
+  - define h <def[duration].in_hours.round_down>
+  - if <def[h]> > 1 {
+    - define return "<def[return]> <def[h]> <def[5]||hours>"
+    } else if <def[h]> > 0 {
+    - define return "<def[return]> <def[h]> <def[4]||hour>"
+    }
+  - define duration <def[duration].sub[d@<def[h]>h]>
+  - define m <def[duration].in_minutes.round_down>
+  - if <def[m]> > 1 {
+    - define return "<def[return]> <def[m]> <def[5]||minutes>"
+    } else if <def[m]> > 0 {
+    - define return "<def[return]> <def[m]> <def[4]||minute>"
+    }
+  - define duration <def[duration].sub[d@<def[m]>m]>
+  - define s <def[duration].in_seconds.round_down>
+  - if <def[s]> > 1 {
+    - define return "<def[return]> <def[s]> <def[5]||seconds>"
+    } else if <def[s]> > 0 {
+    - define return "<def[return]> <def[s]> <def[4]||second>"
+    }
+  - determine <def[return].trim>
