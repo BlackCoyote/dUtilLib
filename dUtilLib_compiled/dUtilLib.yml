@@ -562,16 +562,16 @@ DUL_duration_formatted_full:
   - define duration <def[duration].sub[d@<def[h]>h]>
   - define m <def[duration].in_minutes.round_down>
   - if <def[m]> > 1 {
-    - define return "<def[return]> <def[m]> <def[5]||minutes>"
+    - define return "<def[return]> <def[m]> <def[7]||minutes>"
     } else if <def[m]> > 0 {
-    - define return "<def[return]> <def[m]> <def[4]||minute>"
+    - define return "<def[return]> <def[m]> <def[6]||minute>"
     }
   - define duration <def[duration].sub[d@<def[m]>m]>
   - define s <def[duration].in_seconds.round_down>
   - if <def[s]> > 1 {
-    - define return "<def[return]> <def[s]> <def[5]||seconds>"
+    - define return "<def[return]> <def[s]> <def[9]||seconds>"
     } else if <def[s]> > 0 {
-    - define return "<def[return]> <def[s]> <def[4]||second>"
+    - define return "<def[return]> <def[s]> <def[8]||second>"
     }
   - determine <def[return].trim>
 DUL_find_best_match:
@@ -962,7 +962,7 @@ DUL_version_script:
   name: dUtilLib
   id: 96
   description: A collection of dscript functions and utilities written by BlackCoyote and Anthony.
-  version: 18
+  version: 19
 DUL_WRCG:
   type: procedure
   debug: false
