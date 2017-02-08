@@ -1,0 +1,33 @@
+DUL_colorcode_to_RGB:
+  type: procedure
+  debug: false
+  DUL:
+    name:
+    - Colorcode to RGB
+    author:
+    - BlackCoyote
+    description:
+    - Returns a matching RGB value for the specified color code
+    usage:
+    - <proc[DUL_colorcode_to_RGB].context[<colorcode>]>
+    example:
+    - <proc[DUL_colorcode_to_RGB].context[&2]>
+  colors:
+    0: 0,0,0
+    1: 0,0,170
+    2: 0,170,0
+    3: 0,170,170
+    4: 170,0,0
+    5: 170,0,170
+    6: 255,170,0
+    7: 170,170,170
+    8: 85,85,85
+    9: 85,85,255
+    a: 85,255,85
+    b: 85,255,255
+    c: 255,85,85
+    d: 255,85,255
+    e: 255,255,85
+    f: 255,255,255
+  script:
+  - determine <script.yaml_key[colors.<def[1].after[&]||null>]||null>
